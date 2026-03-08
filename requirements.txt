@@ -1,0 +1,12 @@
+yfinance==0.2.40
+fredapi==0.5.1
+duckdb==0.10.1
+apache-airflow==2.9.1
+pandas==2.2.1
+scikit-learn==1.4.2
+fastapi==0.111.0
+uvicorn==0.29.0
+evidently==0.4.16
+streamlit==1.33.0
+joblib==1.4.0
+python-dotenv==1.0.1

@@ -1,0 +1,18 @@
+# DuckDB data file — never commit this
+data/
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+.venv/
+
+# Model artifacts — optionally gitignore these too
+models/artifacts/
+
+# Evidently reports
+reports/
+
+# Airflow logs
+airflow/logs/
