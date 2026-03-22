@@ -9,12 +9,13 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
-    _PIP_ADDITIONAL_REQUIREMENTS: "yfinance fredapi duckdb pandas python-dotenv"
+    _PIP_ADDITIONAL_REQUIREMENTS: "yfinance fredapi duckdb pandas python-dotenv scikit-learn joblib"
   volumes:
     - ./airflow/dags:/opt/airflow/dags
     - ./airflow/logs:/opt/airflow/logs
     - ./ingestion:/opt/airflow/ingestion
     - ./features:/opt/airflow/features
+    - ./models:/opt/airflow/models
     - ./data:/opt/airflow/data        # DuckDB file lives here
     - ./.env:/opt/airflow/.env
   depends_on:
