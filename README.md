@@ -23,7 +23,9 @@ and monitored for data drift with Evidently AI.
 
 ## Status
 
-🚧 In progress — Phase 1 (Data Foundation)
+Completed — Phase 1 (Data Foundation)
+Completed — Phase 2 (Feature Engineering)
+In progress — Phase 3 (Modeling)
 
 ## Setup
 
