@@ -10,6 +10,7 @@ sys.path.insert(0, "/opt/airflow/ingestion")
 from extract_prices import run_extraction as extract_prices
 from extract_macro import run_extraction as extract_macro
 from validate_data import run_validation
+from build_features import run_build as build_features_fn
 
 default_args = {
     "owner": "marcos",
@@ -26,7 +27,7 @@ with DAG(
     start_date=days_ago(1),
     catchup=False,
     max_active_runs=1,
-    tags=["ingestion", "phase-1"],
+    tags=["ingestion", "phase-2"],
 ):
     task_extract_prices = PythonOperator(
         task_id="extract_prices",
@@ -43,5 +44,10 @@ with DAG(
         python_callable=run_validation,
     )
 
+    task_build_features = PythonOperator(
+        task_id="build_features",
+        python_callable=build_features_fn,
+    )
+
     # Tasks run sequentially due to DuckDB's single-writer file lock constraint.
-    task_extract_prices >> task_extract_macro >> task_validate
+    task_extract_prices >> task_extract_macro >> task_validate >> task_build_features
