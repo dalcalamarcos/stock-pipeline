@@ -9,7 +9,7 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
-    _PIP_ADDITIONAL_REQUIREMENTS: "yfinance fredapi duckdb pandas python-dotenv scikit-learn joblib"
+    _PIP_ADDITIONAL_REQUIREMENTS: "yfinance fredapi duckdb==1.1.3 pandas python-dotenv scikit-learn==1.8.0 joblib evidently==0.4.16"
   volumes:
     - ./airflow/dags:/opt/airflow/dags
     - ./airflow/logs:/opt/airflow/logs
@@ -52,6 +52,31 @@ services:
     <<: *airflow-common
     command: scheduler
     restart: always
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+      - ./ingestion:/opt/airflow/ingestion
+      - ./features:/opt/airflow/features
+      - ./models:/opt/airflow/models
+      - ./data:/opt/airflow/data        # DuckDB file lives here
+      - ./.env:/opt/airflow/.env
+      - ./reports:/opt/airflow/reports
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data:ro
+      - ./models/artifacts:/app/models/artifacts:ro
+    environment:
+      - DUCKDB_PATH=/app/data/stock_pipeline.duckdb
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
 
 volumes:
   postgres_data:
