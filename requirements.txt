@@ -5,8 +5,8 @@ apache-airflow==2.9.1
 pandas==2.2.1
 scikit-learn==1.4.2
 fastapi==0.111.0
-uvicorn==0.29.0
-evidently==0.4.16
+uvicorn[standard]==0.29.0
+evidently==0.4.16  # pinned: <1.6.0 scikit-learn constraint, safe with current 1.4.2 pin
 streamlit==1.33.0
 joblib==1.4.0
 python-dotenv==1.0.1

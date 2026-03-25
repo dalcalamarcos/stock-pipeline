@@ -16,3 +16,6 @@ reports/
 
 # Airflow logs
 airflow/logs/
+
+# Claude Folder
+.claude/

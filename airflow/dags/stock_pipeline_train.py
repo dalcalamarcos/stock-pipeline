@@ -9,6 +9,7 @@ sys.path.insert(0, '/opt/airflow')
 
 from models.train import run_training
 from models.evaluate import run_evaluation
+from models.drift import run_drift_report
 
 default_args = {
     "owner": "marcos",
@@ -25,7 +26,7 @@ with DAG(
     start_date=days_ago(1),
     catchup=False,
     max_active_runs=1,
-    tags=["modeling", "phase-3"],
+    tags=["modeling", "phase-4"],
 ):
     task_train = PythonOperator(
         task_id="train_models",
@@ -37,4 +38,9 @@ with DAG(
         python_callable=run_evaluation,
     )
 
-    task_train >> task_evaluate
+    task_drift = PythonOperator(
+        task_id="generate_drift_report",
+        python_callable=run_drift_report,
+    )
+
+    task_train >> task_evaluate >> task_drift
